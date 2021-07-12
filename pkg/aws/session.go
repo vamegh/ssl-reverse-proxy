@@ -23,7 +23,7 @@ func (c Clients) Session() *session.Session {
 }
 
 func (c Clients) Config(roleArn *string, r string) *aws.Config {
-	// return no config for nil inputs
+	// return no configs for nil inputs
 	if roleArn == nil || *roleArn == "" {
 		return nil
 	}
@@ -31,13 +31,13 @@ func (c Clients) Config(roleArn *string, r string) *aws.Config {
 	region := r
 	// include region in cache key otherwise concurrency errors
 	key := fmt.Sprintf("%v::%v", region, roleArn)
-	// check for cached config
+	// check for cached configs
 	if c.configs != nil && c.configs[key] != nil {
 		return c.configs[key]
 	}
 	// new creds
 	creds := stscreds.NewCredentials(c.Session(), *roleArn)
-	// new config
+	// new configs
 	config := aws.NewConfig().WithCredentials(creds).WithRegion(region).WithMaxRetries(10)
 	if c.configs == nil {
 		c.configs = map[string]*aws.Config{}

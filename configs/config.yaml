@@ -1,0 +1,26 @@
+## Configuration file for reverse proxy
+
+proxy_details:
+  - destination: "/google/"
+    src_host: "www.google.com"
+    src_port: "443"
+    src_protocol: "https"
+    strip_prefix: "true"
+  - destination: "/gmail/"
+    src_host: "www.gmail.com"
+    src_port: "443"
+    src_protocol: "https"
+    strip_prefix: "true"
+
+management:
+  health: "/health"
+  info: "/info"
+
+aws:
+  region: "eu-west-2"
+  enabled: False
+  secrets_manager:
+    secret_name: "/secret/key"
+  credentials:
+    access_key: ""
+    secret_key: ""
