@@ -12,10 +12,8 @@ import (
 
 
 func main() {
-	fmt.Print("BAH HUMBUG 1 ")
 	args := cmdHandler.ArgParser()
 	data := configHandler.GetData(args.ConfigFile)
-	fmt.Print("BAH HUMBUG 2")
 	dataTest, _ := yaml.Marshal(data)
 	//dataTestJson, _ := yaml.YAMLToJSON(dataTest)
 	fmt.Println(string(dataTest))
