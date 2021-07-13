@@ -1,16 +1,19 @@
 ## Configuration file for reverse proxy
 
 proxy_details:
-  - destination: "/google/"
+  - destination: "/google"
     src_host: "www.google.com"
-    src_port: "443"
+    src_port: 443
     src_protocol: "https"
-    strip_prefix: "true"
-  - destination: "/gmail/"
+    strip_prefix: true
+    idle_timeout: 10
+  - destination: "/gmail"
     src_host: "www.gmail.com"
-    src_port: "443"
+    src_port: 443
     src_protocol: "https"
-    strip_prefix: "true"
+    strip_prefix: true
+    idle_timeout: 10
+
 
 management:
   health: "/health"

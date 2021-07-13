@@ -7,9 +7,9 @@ import (
 	"github.com/vamegh/ssl-reverse-proxy/pkg/configHandler"
 	"github.com/vamegh/ssl-reverse-proxy/pkg/proxy"
 	"log"
+	"net/http"
 	"sigs.k8s.io/yaml"
 )
-
 
 func main() {
 	args := cmdHandler.ArgParser()
@@ -19,7 +19,6 @@ func main() {
 	fmt.Println(string(dataTest))
 
 	type ProxyInterface interface {
-
 	}
 	if data.Aws.Enabled == true {
 		secretMap, err := utils.GetSecret(data.Aws.Region, data.Aws.SecretsManager.SecretName)
@@ -36,10 +35,11 @@ func main() {
 		log.Printf("Reading through Proxy Config: %d, data: %s", idx, ProxyDetails)
 		log.Printf("destination: %s", ProxyDetails.Destination)
 		log.Printf("Source Host: %s", ProxyDetails.SrcHost)
-		proxy.RevProxy(&ProxyDetails)
+		revProxy := proxy.RevProxy(ProxyDetails)
+
+		http.HandleFunc(ProxyDetails.Destination, func(w http.ResponseWriter, r *http.Request) {
+			revProxy.ServeHTTP(w, r)
+		})
 	}
-
-
-
-
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
